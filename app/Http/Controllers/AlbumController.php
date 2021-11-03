@@ -17,7 +17,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums  = Album::latest()->get();
+        $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
         return Inertia::render('Album/Index', [
             'albums' => $albums              
         ]);
@@ -76,9 +76,18 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Album $album)
     {
-        //
+        return Inertia::render('Album/Edit', [
+            'album' => [
+                'id' => $album->id,
+                'name' => $album->name,
+                'description' => $album->description,
+                'image' => $album->image,
+                'category' => $album->category()->get()
+                //'questions' => $album->questions()->get()->map->only('id', 'question'),
+            ],
+        ]);
     }
 
     /**

@@ -16,7 +16,9 @@
         <v-main>
           <div class="flex">
             <span class="font-semibold">
-              <v-btn class="bg-white" color="white" elevation="0">Albums</v-btn>
+              <v-btn class="bg-white" color="white" elevation="0"
+                >My Albums</v-btn
+              >
             </span>
             <span align="right" class="mb-8 flex justify-end">
               <inertia-link :href="route('album.create')">
@@ -77,7 +79,8 @@
                     class="
                       group
                       h-48
-                      md:h-96
+                      md:h-72
+                      lg:h-96
                       flex
                       justify-end
                       items-end
@@ -88,53 +91,56 @@
                       relative
                     "
                   >
-                    <img
-                      :src="album.image"
-                      loading="lazy"
-                      alt="Photo by Minh Pham"
-                      class="
-                        w-full
-                        h-full
-                        object-cover object-center
-                        absolute
-                        inset-0
-                        transform
-                        group-hover:scale-110
-                        transition
-                        duration-200
-                      "
-                    />
+                    <inertia-link :href="route('album.edit', album.id)">
+                      <img
+                        :src="album.image"
+                        loading="lazy"
+                        alt="Photo by Minh Pham"
+                        class="
+                          w-full
+                          h-full
+                          object-cover object-center
+                          absolute
+                          inset-0
+                          transform
+                          group-hover:scale-110
+                          transition
+                          duration-200
+                        "
+                      />
 
-                    <div
-                      class="
-                        bg-gradient-to-t
-                        from-gray-800
-                        via-transparent
-                        to-transparent
-                        opacity-50
-                        absolute
-                        inset-0
-                        pointer-events-none
-                      "
-                    ></div>
+                      <div
+                        class="
+                          bg-gradient-to-t
+                          from-gray-800
+                          via-transparent
+                          to-transparent
+                          opacity-50
+                          absolute
+                          inset-0
+                          pointer-events-none
+                        "
+                      ></div>
 
-                    <span
-                      class="
-                        inline-block
-                        text-white text-xs
-                        md:text-sm
-                        border border-gray-500
-                        rounded-lg
-                        backdrop-blur
-                        relative
-                        px-2
-                        md:px-3
-                        py-1
-                        mr-3
-                        mb-3
-                      "
-                      >{{ album.name }}</span
-                    >
+                      <span
+                        class="
+                          inline-block
+                          text-white text-xs
+                          md:text-sm
+                          border border-gray-500
+                          rounded-lg
+                          backdrop-blur
+                          bg-indigo-500
+                          relative
+                          px-2
+                          md:px-3
+                          py-1
+                          mr-3
+                          mb-3
+                        "
+                        >{{ album.name }}</span
+                      >
+                    </inertia-link>
                   </a>
                   <!-- image - end -->
                 </div>
