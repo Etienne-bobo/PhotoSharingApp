@@ -167,7 +167,7 @@
         </header>
 
         <!-- Page Content -->
-        <main>
+        <main class="bg-white">
             <slot></slot>
         </main>
 

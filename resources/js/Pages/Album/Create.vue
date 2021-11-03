@@ -7,12 +7,7 @@
           <v-alert border="top" colored-border type="info" elevation="2">
             Create Albun
           </v-alert>
-          <v-form
-            ref="form"
-            class="mt-6"
-            v-model="valid"
-            lazy-validation
-          >
+          <v-form ref="form" class="mt-6" v-model="valid" lazy-validation>
             <v-text-field
               v-model="form.name"
               :rules="nameRules"
@@ -35,16 +30,18 @@
               name="category"
               :rules="categoryRules"
               item-value="id"
+              class="mb-5"
               item-text="name"
               label="Select album category"
             />
+
             <v-file-input
               v-model="files"
               color="deep-purple accent-4"
               accept="image/*"
               counter
               filled
-              multiple
+              @change="onUpload"
               placeholder="Select your files"
               :show-size="1000"
             >
@@ -71,7 +68,7 @@
               :disabled="!valid"
               color="primary"
               class="mr-4 w-full px-16 mt-4 py-8"
-              @click="store(form)"
+              @click.prevent="store"
             >
               Create
             </v-btn>
@@ -83,42 +80,46 @@
 </template>
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    files: [],
-    form: {
-      name: "",
-      description: "",
-      image: "",
-    },
-    rules: [
-      (value) =>
-        !value ||
-        value.size < 2000000 ||
-        "Avatar size should be less than 2 MB!",
-    ],
-    categoryRules: [(v) => !!v || "Quiz is required"],
-    nameRules: [(v) => !!v || "Name is required"],
-    descriptionRules: [(v) => !!v || "Description is required"],
-  }),
-  computed: {
-      solo(){
-          return this.form.image = this.files[0].name
-      }
+  data() {
+    return {
+      valid: true,
+      files: [],
+      form: this.$inertia.form({
+        name: "",
+        description: "",
+        image: null,
+        category: "",
+      }),
+      // rules: [
+      //   (value) =>
+      //     !value ||
+      //     value.size < 2000000 ||
+      //     "Avatar size should be less than 2 MB!",
+      // ],
+      categoryRules: [(v) => !!v || "Quiz is required"],
+      nameRules: [(v) => !!v || "Name is required"],
+      descriptionRules: [(v) => !!v || "Description is required"],
+    };
   },
+  props: ["categories"],
+
   methods: {
     validate() {
       this.$refs.form.validate();
     },
+    onUpload() {
+      this.form.image = this.files;
+    },
+
     reset() {
       this.$refs.form.reset();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    store: function (data) {
+    store: function () {
       if (this.$refs.form.validate()) {
-        this.$inertia.post("/quiz", data);
+        this.form.post("/album");
         this.snackbar = true;
       }
     },

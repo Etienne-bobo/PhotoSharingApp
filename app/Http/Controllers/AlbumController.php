@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Category;
+use App\Models\Album;
+
 class AlbumController extends Controller
 {
     /**
@@ -14,7 +17,10 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Album/Index');
+        $albums  = Album::latest()->get();
+        return Inertia::render('Album/Index', [
+            'albums' => $albums              
+        ]);
     }
 
     /**
@@ -24,7 +30,10 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Album/Create');
+        $categories  = Category::get();
+        return Inertia::render('Album/Create', [
+            'categories' => $categories              
+        ]);
     }
 
     /**
@@ -35,7 +44,18 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $image = $request->file('image')->store('albums');
+        Album::create([
+            'name' => $request->get('name'),
+            'slug' => $request->get('name'),
+            'description' => $request->get('description'),
+            'category_id' => $request->get('category'),
+            'user_id' => auth()->user()->id,
+            'image' => $image
+        ]);
+        return Redirect::route('album.index');
+        // $id = $album->id;
+        // return response()->json(['id' => $id]);
     }
 
     /**
