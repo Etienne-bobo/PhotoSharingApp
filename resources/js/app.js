@@ -8,7 +8,6 @@ import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import 'vuetify/dist/vuetify.min.css';
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);

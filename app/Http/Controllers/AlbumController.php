@@ -44,7 +44,8 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        $image = $request->file('image')->store('albums');
+        //$image = $request->file('image')->store('albums');
+        $image = $request->file('image')->storeOnCloudinary()->getSecurePath();;
         Album::create([
             'name' => $request->get('name'),
             'slug' => $request->get('name'),
@@ -53,7 +54,7 @@ class AlbumController extends Controller
             'user_id' => auth()->user()->id,
             'image' => $image
         ]);
-        return Redirect::route('album.index');
+        return Redirect::route('album.index')->with('message', 'Success Album created...');;
         // $id = $album->id;
         // return response()->json(['id' => $id]);
     }

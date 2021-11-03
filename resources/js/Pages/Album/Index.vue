@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <AppLayout>
+    <app-layout>
       <div v-if="$page.flash.message" class="text-center">
         <v-snackbar v-model="snackbar" :multi-line="multiLine" top>
           <p class="text-sm">{{ $page.flash.message }}</p>
@@ -16,13 +16,12 @@
         <v-main>
           <div class="flex">
             <span class="font-semibold">
-              <v-btn elevation="0">Albums</v-btn>
+              <v-btn class="bg-white" color="white" elevation="0">Albums</v-btn>
             </span>
             <span align="right" class="mb-8 flex justify-end">
               <inertia-link :href="route('album.create')">
-                <v-btn color="primary px-6 py-6">
-                  <v-icon>mdi-plus</v-icon>
-                  Add new album
+                <v-btn class="mx-2" fab dark color="primary">
+                  <v-icon dark> mdi-plus </v-icon>
                 </v-btn>
               </inertia-link>
             </span>
@@ -73,7 +72,8 @@
                   <!-- image - start -->
                   <a
                     href="#"
-                    v-for="(album, index) in albums" :key="index"
+                    v-for="(album, index) in albums"
+                    :key="index"
                     class="
                       group
                       h-48
@@ -89,7 +89,7 @@
                     "
                   >
                     <img
-                      :src="`storage/${album.image}`"
+                      :src="album.image"
                       loading="lazy"
                       alt="Photo by Minh Pham"
                       class="
@@ -133,7 +133,7 @@
                         mr-3
                         mb-3
                       "
-                      >{{album.name}}</span
+                      >{{ album.name }}</span
                     >
                   </a>
                   <!-- image - end -->
@@ -156,11 +156,11 @@
           </v-row>
         </v-main>
       </div>
-    </AppLayout>
+    </app-layout>
   </v-app>
 </template>
 <script>
-import AppLayout from "../../Layouts/AppLayout";
+import AppLayout from "../../Layouts/AppLayout.vue";
 export default {
   name: "index",
   props: ["albums"],

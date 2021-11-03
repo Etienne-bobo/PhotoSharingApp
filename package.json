@@ -12,6 +12,7 @@
     "devDependencies": {
         "@inertiajs/inertia": "^0.3.0",
         "@inertiajs/inertia-vue": "^0.2.0",
+        "@mdi/font": "^6.4.95",
         "@tailwindcss/ui": "^0.6.0",
         "axios": "^0.21",
         "laravel-jetstream": "^0.0.3",
@@ -28,7 +29,6 @@
         "vuetify-loader": "^1.7.3"
     },
     "dependencies": {
-        "material-design-icons-iconfont": "^6.1.1",
         "vuetify": "^2.5.10"
     }
 }
