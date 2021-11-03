@@ -28,6 +28,7 @@
         "vuetify-loader": "^1.7.3"
     },
     "dependencies": {
+        "material-design-icons-iconfont": "^6.1.1",
         "vuetify": "^2.5.10"
     }
 }

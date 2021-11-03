@@ -14,7 +14,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Album/Index');
     }
 
     /**
