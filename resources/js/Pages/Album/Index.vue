@@ -169,12 +169,12 @@
 import AppLayout from "../../Layouts/AppLayout.vue";
 export default {
   name: "index",
-  props: ["albums"],
   data() {
     return {
       confirmationDialog: false,
       multiLine: true,
       snackbar: true,
+      albums: [],
       attrs: {
         class: "mb-6",
         boilerplate: false,
@@ -184,6 +184,9 @@ export default {
   },
   components: {
     AppLayout,
+  },
+  async mounted(){
+    await axios.get('http://localhost:8000/getAlbums').then((response)=> this.albums = response.data)
   },
   methods: {
     //     edit: function (data) {

@@ -197,10 +197,11 @@
               </v-dialog>
             </v-row>
             <div class="flex justify-end mr-3">
-              <!-- <inertia-link :href="route('question.create')"> -->
-              <v-btn class="mx-2 mb-5" fab dark color="primary">
-                <v-icon dark> mdi-plus </v-icon>
-              </v-btn>
+              <inertia-link :href="route('image.create', album.id)">
+                <v-btn class="mx-2 mb-5" fab dark color="primary">
+                  <v-icon dark> mdi-plus </v-icon>
+                </v-btn>
+              </inertia-link>
               <v-btn
                 @click="confirmationDialog = true"
                 fab
@@ -208,7 +209,6 @@
               >
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
-              <!-- </inertia-link> -->
             </div>
             <!-- <v-row no-gutters v-if="album.questions.length != 0">
           <v-col
@@ -231,7 +231,90 @@
             </v-card>
           </v-col>
         </v-row> -->
-            <div class="text-center mx-auto">
+                <span class="font-semibold mt-4">My galery</span>
+
+                <div
+                  class="
+                    grid grid-cols-2
+                    sm:grid-cols-3
+                    gap-4
+                    md:gap-6
+                    xl:gap-8
+                    mt-8
+                  "
+                  v-if="album.images.length != 0"
+                >
+                  <!-- image - start -->
+                  <span
+                     v-for="(image, id) in album.images"
+                    :key="id"
+                    class="
+                      group
+                      h-48
+                      md:h-72
+                      lg:h-96
+                      flex
+                      justify-end
+                      items-end
+                      bg-gray-100
+                      overflow-hidden
+                      rounded-lg
+                      shadow-lg
+                      relative
+                    "
+                    @click="overlay = !overlay"
+
+                  >
+                      <img
+                        :src="image.image"
+                        loading="lazy"
+                        alt="Photo by Minh Pham"
+                        class="
+                          w-full
+                          h-full
+                          object-cover object-center
+                          absolute
+                          inset-0
+                          transform
+                          group-hover:scale-110
+                          transition
+                          duration-200
+                        "
+
+                      />
+
+                      <div
+                        class="
+                          bg-gradient-to-t
+                          from-gray-800
+                          via-transparent
+                          to-transparent
+                          opacity-50
+                          absolute
+                          inset-0
+                          pointer-events-none
+                        "
+                      ></div>
+                    <v-overlay
+                      :z-index="zIndex"
+                      :value="overlay"
+                    >
+                    <img
+                        :src="image.image"
+                        class="m-8 max-w-xl"
+                        >
+                      <v-btn
+                        class="white--text"
+                        color="teal"
+                        @click="overlay = false"
+                      >
+                        Hide Overlay
+                      </v-btn>
+                    </v-overlay>
+                  </span>
+                  <!-- image - end -->
+                </div>
+            <div v-else class="text-center mx-auto">
               <span>
                 No image availaible in this album.<br />
                 Click add button to add one .
@@ -256,6 +339,8 @@ export default {
     return {
       dialog: false,
       loading: false,
+      overlay:false,
+      zIndex: 0,
       confirmationDialog: false,
       valid: true,
       files: [],

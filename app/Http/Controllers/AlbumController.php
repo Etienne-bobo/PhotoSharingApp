@@ -86,8 +86,8 @@ class AlbumController extends Controller
                 'name' => $album->name,
                 'description' => $album->description,
                 'image' => $album->image,
-                'category' => $album->category()->get()
-                //'questions' => $album->questions()->get()->map->only('id', 'question'),
+                'category' => $album->category()->get(),
+                'images' => $album->images()->get()->map->only('id', 'image'),
             ],
             'categories' => $categories
         ]);
@@ -128,5 +128,11 @@ class AlbumController extends Controller
         $album = Album::find($id);
         $album->delete();
         return Redirect::route('album.index')->with('message', 'Success Album deleted ....');
+    }
+
+
+    public function getAlbums(){
+        $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
+        return $albums;
     }
 }

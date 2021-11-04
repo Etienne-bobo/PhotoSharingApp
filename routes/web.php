@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])
     ->resource('album', AlbumController::class);
+
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/getAlbums', [AlbumController::class, 'getAlbums']);
+
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/image/create/{albumId}', [ImageController::class, 'create'])->name('image.create');
+
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->post('/image/store', [ImageController::class, 'store']);
