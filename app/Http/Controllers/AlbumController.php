@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Album;
+use App\Models\Image;
 
 class AlbumController extends Controller
 {
@@ -78,6 +79,7 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
+        $categories = Category::get();
         return Inertia::render('Album/Edit', [
             'album' => [
                 'id' => $album->id,
@@ -87,6 +89,7 @@ class AlbumController extends Controller
                 'category' => $album->category()->get()
                 //'questions' => $album->questions()->get()->map->only('id', 'question'),
             ],
+            'categories' => $categories
         ]);
     }
 
@@ -99,7 +102,18 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $album = Album::find($id);
+        $image = $album->image;
+        if($request->hasFile('image')){
+            $image = $request->file('image')->storeOnCloudinary()->getSecurePath();
+            \Storage::delete($album->image);
+        }    
+        $album->name = $request->get('name');
+        $album->description = $request->get('description');
+        $album->category_id = $request->get('category');
+        $album->image = $image;
+        $album->save();
+        return redirect()->back()->with('message', 'Success Album updated ....');;
     }
 
     /**
@@ -110,6 +124,9 @@ class AlbumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        (new Image())->deleteImage($id);
+        $album = Album::find($id);
+        $album->delete();
+        return Redirect::route('album.index')->with('message', 'Success Album deleted ....');
     }
 }

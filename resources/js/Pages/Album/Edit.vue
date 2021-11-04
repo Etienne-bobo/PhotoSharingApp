@@ -3,6 +3,14 @@
     <AppLayout>
       <div class="max-w-7xl mx-auto">
         <v-main>
+
+      <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        top
+        color="deep-purple accent-4"
+      ></v-progress-linear>
           <div v-if="$page.flash.message" class="text-center">
             <v-snackbar v-model="snackbar" :multi-line="multiLine" top>
               <p class="text-sm">{{ $page.flash.message }}</p>
@@ -91,6 +99,53 @@
                           label="Description"
                           rows="1"
                         ></v-textarea>
+                        <v-select
+                          v-for="category in album.category"
+                          :key="category.id"
+                          :items="categories"
+                          v-model="form.category = category.id"
+                          name="category"
+                          :rules="categoryRules"
+                          item-value="id"
+                          class="mb-5"
+                          item-text="name"
+                          label="Select album category"
+                        />
+
+                        <v-file-input
+                          v-model="files"
+                          color="deep-purple accent-4"
+                          accept="image/*"
+                          counter
+                          filled
+                          @change="onUpload"
+                          placeholder="Select your files"
+                          :show-size="1000"
+                        >
+                          <template v-slot:selection="{ index, text }">
+                            <v-chip
+                              v-if="index < 2"
+                              color="deep-purple accent-4"
+                              dark
+                              label
+                              small
+                            >
+                              {{ text }}
+                            </v-chip>
+
+                            <span
+                              v-else-if="index === 2"
+                              class="
+                                text-overline
+                                grey--text
+                                text--darken-3
+                                mx-2
+                              "
+                            >
+                              +{{ files.length - 2 }} File(s)
+                            </span>
+                          </template>
+                        </v-file-input>
                       </v-form>
                     </v-container>
                     <small>*indicates required field</small>
@@ -196,23 +251,28 @@ export default {
   components: {
     AppLayout,
   },
-  props: ["album"],
-  remember: "form",
+  props: ["album", "categories"],
   data() {
     return {
       dialog: false,
+      loading: false,
       confirmationDialog: false,
       valid: true,
+      files: [],
       sending: false,
       multiLine: true,
       snackbar: true,
-      form: {
+      form: this.$inertia.form({
+        _method:"PUT",
         name: this.album.name,
         description: this.album.description,
-      },
+        category: '',
+        image: null,
+      }),
       nameRules: [(v) => !!v || "Name is required"],
-      minutesRules: [(v) => !!v || "Duration of the album is required"],
       descriptionRules: [(v) => !!v || "Description is required"],
+      categoryRules: [(v) => !!v || "Category is required"],
+
     };
   },
   methods: {
@@ -222,9 +282,15 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    update: function () {
-      if (this.$refs.form.validate()) {
-        this.$inertia.put(
+    onUpload(){
+      this.form.image = this.files
+    },
+    async update() {
+      this.dialog = false
+      this.loading = true
+     try{
+        if (this.$refs.form.validate()) {
+        await this.form.post(
           this.route("album.update", this.album.id),
           this.form,
           {
@@ -232,8 +298,15 @@ export default {
             onFinish: () => (this.sending = false),
           }
         );
+        this.loading = false
       }
-      this.dialog = false;
+     }catch(e){
+       return e
+     }
+     
+       
+      
+     
     },
     destroy(album) {
       album._method = "DELETE";

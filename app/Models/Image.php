@@ -9,4 +9,8 @@ class Image extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function deleteImage($imageId){
+        Image::where('album_id', $imageId)->delete();
+    }
 }
