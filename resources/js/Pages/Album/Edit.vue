@@ -262,9 +262,9 @@
                       shadow-lg
                       relative
                     "
-                    @click="overlay = !overlay"
-
                   >
+                    <inertia-link :href="route('image.edit', image.id)">
+
                       <img
                         :src="image.image"
                         loading="lazy"
@@ -295,22 +295,7 @@
                           pointer-events-none
                         "
                       ></div>
-                    <v-overlay
-                      :z-index="zIndex"
-                      :value="overlay"
-                    >
-                    <img
-                        :src="image.image"
-                        class="m-8 max-w-xl"
-                        >
-                      <v-btn
-                        class="white--text"
-                        color="teal"
-                        @click="overlay = false"
-                      >
-                        Hide Overlay
-                      </v-btn>
-                    </v-overlay>
+                    </inertia-link>
                   </span>
                   <!-- image - end -->
                 </div>
@@ -339,7 +324,6 @@ export default {
     return {
       dialog: false,
       loading: false,
-      overlay:false,
       zIndex: 0,
       confirmationDialog: false,
       valid: true,

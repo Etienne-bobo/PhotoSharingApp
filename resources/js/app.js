@@ -13,6 +13,11 @@ Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
+import VueDisqus from 'vue-disqus'
+
+Vue.use(VueDisqus, {
+  shortname: 'share-karen'
+})
 
 const app = document.getElementById('app');
 

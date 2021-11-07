@@ -29,6 +29,7 @@
         "vuetify-loader": "^1.7.3"
     },
     "dependencies": {
+        "vue-disqus": "^4.0.1",
         "vuetify": "^2.5.10"
     }
 }

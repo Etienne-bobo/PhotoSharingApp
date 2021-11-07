@@ -37,3 +37,6 @@ Route::middleware(['auth:sanctum', 'verified'])
 
 Route::middleware(['auth:sanctum', 'verified'])
     ->post('/image/store', [ImageController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/image/edit/{id}', [ImageController::class, 'edit'])->name('image.edit');
