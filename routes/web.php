@@ -6,7 +6,8 @@ use App\Http\Controllers\ImageController;
 use Laravelista\Comments\CommentController;
 use Illuminate\Http\Request;
 use App\Models\Image;
-use Laravel;
+use Illuminate\Support\Facades\Config;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,8 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::middleware(['auth:sanctum', 'verified'])
     ->post('/image/store', [ImageController::class, 'store']);
 
-Route::middleware(['auth:sanctum', 'verified'])
-    ->get('/image/{id}/edit', [ImageController::class, 'edit'])->name('image.edit');
+Route::get('/image/{id}/edit', [ImageController::class, 'edit'])->name('image.edit');
 
 Route::middleware(['auth:sanctum', 'verified'])
     ->post('/image/{id}/edit/comments', function(Request $request,$id){
@@ -56,6 +56,24 @@ Route::middleware(['auth:sanctum', 'verified'])
         $comment->save();
 
         return $comment;
+    });
+
+    Route::middleware(['auth:sanctum', 'verified'])
+    ->post('/image/{id}/edit/comment/{commentId}/reply', function(Request $request,$id, $commentId){
+        $comment = new \Laravelista\Comments\Comment;
+        $com = $comment->find($commentId);
+        $image = Image::find($id);
+        $commentClass = Config::get('comments.model');
+        $reply = new $commentClass;
+        $reply->commenter()->associate(auth()->user());
+        $reply->commentable()->associate($image);
+        $reply->parent()->associate($com);
+        $reply->commentable_id = $commentId;
+        $reply->comment = $request->reply;
+        $reply->approved = true;
+        $reply->save();
+
+        return $reply;
     });
 
 

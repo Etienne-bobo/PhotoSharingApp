@@ -75,12 +75,16 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        $image = Image::find($id);
+       $image = Image::find($id);
+        $comment = new \Laravelista\Comments\Comment;
+
         return Inertia::render('Image/Edit', [
             'image' => $image,
             'comments' => $image->comments()->get(),
-            'user' => auth()->user()
+            'user' => auth()->user(),
+            'commentsReply' => $comment->where('child_id', '!=', '')->get(),
         ]);
+        // dd($comment->find($id)->get());
     }
 
     /**
