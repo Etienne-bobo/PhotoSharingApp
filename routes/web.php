@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ImageController;
-
+use Laravelista\Comments\CommentController;
+use Illuminate\Http\Request;
+use App\Models\Image;
+use Laravel;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,4 +42,18 @@ Route::middleware(['auth:sanctum', 'verified'])
     ->post('/image/store', [ImageController::class, 'store']);
 
 Route::middleware(['auth:sanctum', 'verified'])
-    ->get('/image/edit/{id}', [ImageController::class, 'edit'])->name('image.edit');
+    ->get('/image/{id}/edit', [ImageController::class, 'edit'])->name('image.edit');
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->post('/image/{id}/edit/comments', function(Request $request,$id){
+        $comment = new \Laravelista\Comments\Comment;
+        $image = Image::find($id);
+        $comment->commenter()->associate(auth()->user());
+        $comment->commentable()->associate($image);
+        $comment->commentable_id = $image->id;
+        $comment->comment = $request->comment;
+        $comment->approved = true;
+        $comment->save();
+
+        return $comment;
+    });

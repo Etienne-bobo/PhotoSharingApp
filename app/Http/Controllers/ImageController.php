@@ -73,13 +73,13 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Image $image)
+    public function edit($id)
     {
+        $image = Image::find($id);
         return Inertia::render('Image/Edit', [
-            'image' => [
-                'id' => $image->id,
-                'image' => $image->image,
-            ],
+            'image' => $image,
+            'comments' => $image->comments()->get(),
+            'user' => auth()->user()
         ]);
     }
 
