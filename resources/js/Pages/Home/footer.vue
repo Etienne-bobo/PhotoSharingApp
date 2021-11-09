@@ -1,6 +1,6 @@
 <template>
   <!-- footer - start -->
-  <div class="bg-white pt-4 sm:pt-10 lg:pt-12">
+  <div class="bg-white max-w-7xl mx-auto pt-4 sm:pt-10 lg:pt-12">
     <footer class="max-w-screen-2xl px-4 md:px-8 mx-auto">
       <div
         class="

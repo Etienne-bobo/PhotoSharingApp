@@ -55,9 +55,7 @@
                       mx-auto
                     "
                   >
-                    This is a section of some simple filler text, also known as
-                    placeholder text. It shares some characteristics of a real
-                    written text but is random or otherwise generated.
+                    Yours albums
                   </p>
                 </div>
                 <!-- text - end -->
@@ -148,18 +146,13 @@
             </div>
           </div>
 
-          <v-row v-else class="text-center mx-auto">
-            <div align="center" class="mx-2">
-              <v-alert border="right" colored-border type="error" elevation="2">
-                Album list is empty.<br />
+          <div v-else class="text-center mx-auto">
+              <span>
+                No image availaible in this album.<br />
                 Click add button to add one .
-              </v-alert>
-              <v-skeleton-loader
-                v-bind="attrs"
-                type="date-picker"
-              ></v-skeleton-loader>
+              </span>
+              <v-img src="../../../../images/no-data.jpg"></v-img>
             </div>
-          </v-row>
         </v-main>
       </div>
     </app-layout>

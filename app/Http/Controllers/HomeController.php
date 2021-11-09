@@ -26,4 +26,11 @@ class HomeController extends Controller
             'albumName' => $oneAlbum->name
         ]);
     }
+
+    public function getAllAlbumlist(){
+        $allAlbum = Album::latest()->get();
+        return Inertia::render('Home/AllAlbum', [
+            'allAlbum' => $allAlbum,
+        ]);
+    }
 }
