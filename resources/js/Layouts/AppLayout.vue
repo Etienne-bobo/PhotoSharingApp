@@ -141,6 +141,7 @@
         <!-- Page Content -->
         <main class="bg-white">
             <slot></slot>
+            <Footer />
         </main>
 
         <!-- Modal Portal -->
@@ -155,7 +156,7 @@
     import JetDropdownLink from '@/Jetstream/DropdownLink'
     import JetNavLink from '@/Jetstream/NavLink'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
-
+    import Footer from "../Pages/Home/footer.vue"
     export default {
         components: {
             JetApplicationMark,
@@ -163,6 +164,7 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            Footer,
         },
 
         data() {

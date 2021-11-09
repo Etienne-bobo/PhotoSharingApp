@@ -76,9 +76,8 @@ Route::middleware(['auth:sanctum', 'verified'])
     });
 
 
-Route::middleware(['auth:sanctum', 'verified'])
-    ->get('image/{id}/edit/comments', function($id){
+Route::get('image/{id}/edit/comments', function($id){
         $image = Image::find($id);
         $comments = $image->comments()->get();
         return $comments;
-    });
+});
