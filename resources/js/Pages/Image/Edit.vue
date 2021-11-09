@@ -58,6 +58,50 @@
               </a>
             </div>
           </div>
+          <v-row justify="center">
+            <v-dialog v-model="confirmationDialog" persistent max-width="600px">
+              <v-card>
+                <v-card-title> Delete this album </v-card-title>
+                <v-card-text>
+                  <p>
+                    This action will remove definitively
+                    this image
+                  </p>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="confirmationDialog = false"
+                  >
+                    Close
+                  </v-btn>
+                  <v-btn
+                    color="red"
+                    class="white--text"
+                    @click="destroy(image)"
+                  >
+                    Delete
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+          <div
+            v-for="(imageOwner, index) in imageAlbum"
+            :key="index"
+            class="flex justify-end mr-3"
+          >
+            <v-btn
+              v-if="imageOwner.user_id == user.id"
+              @click="confirmationDialog = true"
+              fab
+              color="red white--text"
+            >
+              <v-icon dark> mdi-delete </v-icon>
+            </v-btn>
+          </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
               <v-form v-if="user" class="flex">
@@ -250,6 +294,10 @@ export default {
       reply: [],
       comments: [],
       tempReply: {},
+      dialog: false,
+      loading: false,
+      zIndex: 0,
+      confirmationDialog: false,
     };
   },
   components: {
@@ -257,7 +305,7 @@ export default {
     AppLayout,
   },
 
-  props: ["image", "user", "commentsReply"],
+  props: ["image", "user", "commentsReply", "imageAlbum"],
   computed: {
     CommentsReplys() {
       if (this.comments.length != 0) {
@@ -316,6 +364,11 @@ export default {
           this.forceFileDownload(response);
         })
         .catch(() => console.log("error occured"));
+    },
+    destroy(image) {
+      image._method = "DELETE";
+      this.$inertia.post("/image/delete/" + image.id, image);
+      this.confirmationDialog = false;
     },
   },
   mounted() {

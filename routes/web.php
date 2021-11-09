@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Config;
 */
 
 Route::get('/', [HomeController::class, 'getAlbumsList']);
-Route::get('/onealbum/{id}', [HomeController::class, 'getOneAlbum'])->name('one.album');
+// Route::get('/onealbum/{id}', [HomeController::class, 'getOneAlbum'])->name('one.album');
 Route::get('/allalbum', [HomeController::class, 'getAllAlbumlist'])->name('all.album');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
@@ -34,6 +34,8 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::middleware(['auth:sanctum', 'verified'])
     ->get('/getAlbums', [AlbumController::class, 'getAlbums']);
 
+Route::middleware(['auth:sanctum', 'verified'])
+    ->delete('/image/delete/{id}', [ImageController::class, 'destroy']);
 
 Route::middleware(['auth:sanctum', 'verified'])
     ->get('/image/create/{albumId}', [ImageController::class, 'create'])->name('image.create');

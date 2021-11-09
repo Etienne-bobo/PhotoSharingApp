@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Album;
 use Laravelista\Comments\Commentable;
+use App\Models\User;
 
 class Image extends Model
 {

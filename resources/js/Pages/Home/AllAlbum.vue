@@ -47,7 +47,7 @@
                 <!-- product - start -->
                 <div v-for="(album, index) in allAlbum" :key="index">
                   <a
-                    :href="route('one.album', album.id)"
+                    :href="route('album.edit', album.id)"
                     class="
                       group
                       h-96

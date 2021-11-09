@@ -19,13 +19,13 @@ class HomeController extends Controller
         ]);
     }
 
-    public function getOneAlbum($id){
-        $oneAlbum = Album::find($id);
-        return Inertia::render('Home/OneAlbum', [
-            'oneAlbumPhotos' => $oneAlbum->images()->get() ,
-            'albumName' => $oneAlbum->name
-        ]);
-    }
+    // public function getOneAlbum($id){
+    //     $oneAlbum = Album::find($id);
+    //     return Inertia::render('Home/OneAlbum', [
+    //         'oneAlbumPhotos' => $oneAlbum->images()->get() ,
+    //         'albumName' => $oneAlbum->name
+    //     ]);
+    // }
 
     public function getAllAlbumlist(){
         $allAlbum = Album::latest()->get();

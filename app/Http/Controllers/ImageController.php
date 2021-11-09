@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Image;
+use Laravelista\Comments\Comment;
 
 class ImageController extends Controller
 {
@@ -76,15 +77,17 @@ class ImageController extends Controller
     public function edit($id)
     {
        $image = Image::find($id);
-        $comment = new \Laravelista\Comments\Comment;
+       $comment = new \Laravelista\Comments\Comment;
 
         return Inertia::render('Image/Edit', [
             'image' => $image,
             'comments' => $image->comments()->get(),
             'user' => auth()->user(),
             'commentsReply' => $comment->where('child_id', '!=', '')->get(),
+            'imageAlbum' => $image->album()->get(),
         ]);
         // dd($comment->find($id)->get());
+       // dd($image->album()->get());
     }
 
     /**
@@ -107,6 +110,10 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = new \Laravelista\Comments\Comment;
+        $comment->where('commentable_id', $id)->forceDelete();
+        $image = Image::find($id);
+        $image->delete();
+        return Redirect::route('album.edit', $image->album_id)->with('message', 'Success image deleted ....');
     }
 }

@@ -54,6 +54,7 @@
                   {{ album.name
                   }}<span
                     ><v-icon
+                      v-if="album.user_id == album.currentUser"
                       class="ml-6"
                       @click="dialog = true"
                       color="primary_dark"
@@ -196,7 +197,7 @@
                 </v-card>
               </v-dialog>
             </v-row>
-            <div class="flex justify-end mr-3">
+            <div v-if="album.user_id == album.currentUser" class="flex justify-end mr-3">
               <inertia-link :href="route('image.create', album.id)">
                 <v-btn class="mx-2 mb-5" fab dark color="primary">
                   <v-icon dark> mdi-plus </v-icon>
@@ -231,7 +232,7 @@
             </v-card>
           </v-col>
         </v-row> -->
-                <span class="font-semibold mt-4">My galery</span>
+                <div class="mt-8 font-semibold mt-4">Galery</div>
 
                 <div
                   class="

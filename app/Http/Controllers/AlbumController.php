@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Album;
 use App\Models\Image;
+use App\Models\User;
 
 class AlbumController extends Controller
 {
@@ -87,6 +88,8 @@ class AlbumController extends Controller
                 'description' => $album->description,
                 'image' => $album->image,
                 'category' => $album->category()->get(),
+                'user_id' => $album->user_id,
+                'currentUser' => auth()->user()->id,
                 'images' => $album->images()->get()->map->only('id', 'image'),
             ],
             'categories' => $categories
