@@ -1,7 +1,10 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
+        <div class="flex items-center">
             <x-jet-authentication-card-logo />
+            <span class="mt-2 text-xl font-semibold ml-3 text-indigo-500">Share Karen</span>
+            </div>
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />

@@ -1,6 +1,59 @@
 <template>
-  <v-app>
+  <div>
+    <AppLayout>
     <v-main>
+      <div class="max-w-7xl px-4 mx-auto">
+        
+                <!-- product - start -->
+                <div>
+                  <a
+                    href="#"
+                    class="
+                      group
+                      Height
+                      block
+                      bg-gray-100
+                      rounded-lg
+                      overflow-hidden
+                      shadow-lg
+                      relative
+                      mb-2
+                      lg:mb-3
+                    "
+                  >
+                    <img
+                      :src="image.image"
+                      loading="lazy"
+                      alt="Photo by Austin Wade"
+                      class="
+                        w-full
+                        h-full
+                        object-cover object-center
+                        group-hover:scale-110
+                        transition
+                        duration-200
+                      "
+                    />
+
+                    <div @click="downloadPhoto" class="flex gap-2 absolute left-0 bottom-2">
+                      <span
+                        class="
+                          bg-green-500
+                          text-white text-sm
+                          font-semibold
+                          tracking-wider
+                          uppercase
+                          rounded-r-lg
+                          px-3
+                          py-1.5
+                          mb-4
+                        "
+                        >Download <v-icon  class="text-white">mdi-download</v-icon></span
+                      >
+                    </div>
+                  </a>
+                </div>
+      </div>
       <div class="max-w-2xl px-4 mx-auto mt-12">
         <v-form v-if="user" class="flex">
           <v-avatar class="mr-3" color="primary">
@@ -141,17 +194,17 @@
             </div>
           </div>
         </span>
-        <span class="mx-auto text-green-500" v-else>
+        <span class="mx-auto text-indigo-500" v-else>
           Be the first to comment
         </span>
       </div>
     </v-main>
-
-    <Disqus />
-  </v-app>
+    </AppLayout>
+  </div>
 </template>
 <script>
 import { TimeAgo } from "vue2-timeago";
+import AppLayout from '../../Layouts/AppLayout.vue';
 export default {
   data() {
     return {
@@ -163,6 +216,7 @@ export default {
   },
   components: {
     TimeAgo,
+    AppLayout,
   },
 
   props: ["image", "user", "commentsReply"],
@@ -206,6 +260,28 @@ export default {
         return e;
       }
     },
+    forceFileDownload(response){
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'file.png') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+    },
+    downloadPhoto(){
+      axios({
+        method: 'get',
+        url: this.image.image,
+        responseType: 'arraybuffer'
+      })
+      .then(response => {
+        
+        this.forceFileDownload(response)
+        
+      })
+      .catch(() => console.log('error occured'))
+    },
+
   },
   mounted() {
     axios
@@ -217,5 +293,8 @@ export default {
 <style scoped>
 .btn {
   text-transform: unset !important;
+}
+.Height{
+  height: 600px;
 }
 </style>

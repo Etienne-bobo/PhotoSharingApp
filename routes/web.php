@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ImageController;
-use Laravelista\Comments\CommentController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use Illuminate\Support\Facades\Config;
@@ -19,9 +19,8 @@ use Illuminate\Support\Facades\Config;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'getAlbumsList']);
+Route::get('/onealbum/{id}', [HomeController::class, 'getOneAlbum'])->name('one.album');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
