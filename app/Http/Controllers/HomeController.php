@@ -39,4 +39,18 @@ class HomeController extends Controller
         $imageOwnerProfile = User::where('id', $id)->get();
         return $imageOwnerProfile;
     }
+
+    public function userAlbums($id){
+        if (User::where('id', '=', $id)->exists()) {
+            $userAlbums = Album::where('user_id', $id)->with('user')->get();
+            $user = User::find($id);
+            return Inertia::render('Home/UserAlbums', [
+                'userAlbums' => $userAlbums,
+                'OneUser' => $user,
+            ]);
+         }else{
+             return Redirect::route('zon');
+         }
+       
+    }
 }

@@ -101,6 +101,7 @@
             </span>
           </div>
           <div v-for="(imageOwnerProfileInfo, ind) in imageOwnerProfile" :key="ind" class="mt-16 px-4 flex items-center text-indigo-500 font-semibold">
+            <inertia-link :href="route('user.albums', imageOwnerProfileInfo.id)">
             <v-avatar class="mr-3" color="indigo">
               <v-img
                 :src="
@@ -109,6 +110,7 @@
               ></v-img>
             </v-avatar>
             <span>{{imageOwnerProfileInfo.name}}</span>
+            </inertia-link>
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">

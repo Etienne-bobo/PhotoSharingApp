@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Config;
 |
 */
 
-Route::get('/', [HomeController::class, 'getAlbumsList']);
+Route::get('/', [HomeController::class, 'getAlbumsList'])->name('zon');
 // Route::get('/onealbum/{id}', [HomeController::class, 'getOneAlbum'])->name('one.album');
 Route::get('/allalbum', [HomeController::class, 'getAllAlbumlist'])->name('all.album');
 
@@ -85,3 +85,5 @@ Route::get('image/{id}/edit/comments', function($id){
 });
 
 Route::get('/imageOwnerProfile/{id}', [HomeController::class, 'imageOwnerProfile']);
+
+Route::get('/userAlbums/{id}', [HomeController::class, 'userAlbums'])->name('user.albums');
