@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Album;
+use App\Models\Image;
+use App\Models\User;
 
 class AlbumController extends Controller
 {
@@ -17,10 +19,15 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
-        return Inertia::render('Album/Index', [
-            'albums' => $albums              
-        ]);
+        if(auth()->user()){
+            $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
+            return Inertia::render('Album/Index', [
+                'albums' => $albums              
+            ]);
+        }else{
+            return Redirect::route('login');
+        }
+       
     }
 
     /**
@@ -30,10 +37,14 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        $categories  = Category::get();
-        return Inertia::render('Album/Create', [
-            'categories' => $categories              
-        ]);
+        if(auth()->user()){
+            $categories  = Category::get();
+            return Inertia::render('Album/Create', [
+                'categories' => $categories              
+            ]);
+         }else{
+            return Redirect::route('login');
+        }
     }
 
     /**
@@ -78,15 +89,19 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
+        $categories = Category::get();
         return Inertia::render('Album/Edit', [
             'album' => [
                 'id' => $album->id,
                 'name' => $album->name,
                 'description' => $album->description,
                 'image' => $album->image,
-                'category' => $album->category()->get()
-                //'questions' => $album->questions()->get()->map->only('id', 'question'),
+                'category' => $album->category()->get(),
+                'user_id' => $album->user_id,
+                'currentUser' => auth()->user(),
+                'images' => $album->images()->get()->map->only('id', 'image'),
             ],
+            'categories' => $categories
         ]);
     }
 
@@ -99,7 +114,18 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $album = Album::find($id);
+        $image = $album->image;
+        if($request->hasFile('image')){
+            $image = $request->file('image')->storeOnCloudinary()->getSecurePath();
+            \Storage::delete($album->image);
+        }    
+        $album->name = $request->get('name');
+        $album->description = $request->get('description');
+        $album->category_id = $request->get('category');
+        $album->image = $image;
+        $album->save();
+        return redirect()->back()->with('message', 'Success Album updated ....');;
     }
 
     /**
@@ -110,6 +136,15 @@ class AlbumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        (new Image())->deleteImage($id);
+        $album = Album::find($id);
+        $album->delete();
+        return Redirect::route('album.index')->with('message', 'Success Album deleted ....');
+    }
+
+
+    public function getAlbums(){
+        $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
+        return $albums;
     }
 }

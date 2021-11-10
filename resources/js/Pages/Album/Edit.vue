@@ -1,25 +1,32 @@
 <template>
-  <v-app>
+  <div>
     <AppLayout>
-      <div class="max-w-7xl mx-auto">
+      <v-app>
         <v-main>
-          <div v-if="$page.flash.message" class="text-center">
-            <v-snackbar v-model="snackbar" :multi-line="multiLine" top>
-              <p class="text-sm">{{ $page.flash.message }}</p>
+          <div class="max-w-7xl mx-auto px-4">
+            <v-progress-linear
+              :active="loading"
+              :indeterminate="loading"
+              absolute
+              top
+              color="deep-purple accent-4"
+            ></v-progress-linear>
+            <div v-if="$page.flash.message" class="text-center">
+              <v-snackbar v-model="snackbar" :multi-line="multiLine" top>
+                <p class="text-sm">{{ $page.flash.message }}</p>
 
-              <template v-slot:action="{ attrs }">
-                <v-btn
-                  color="red"
-                  text
-                  v-bind="attrs"
-                  @click="snackbar = false"
-                >
-                  Close
-                </v-btn>
-              </template>
-            </v-snackbar>
-          </div>
-          <v-container>
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="red"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
+            </div>
             <v-flex class="mt-6">
               <div class="mt-6 py-8 rounded-md px-4 w-full bg-gray-200">
                 <p
@@ -44,8 +51,9 @@
                   />
 
                   {{ album.name
-                  }}<span
+                  }}<span v-if="album.currentUser"
                     ><v-icon
+                      v-if="album.user_id == album.currentUser.id"
                       class="ml-6"
                       @click="dialog = true"
                       color="primary_dark"
@@ -91,6 +99,53 @@
                           label="Description"
                           rows="1"
                         ></v-textarea>
+                        <v-select
+                          v-for="category in album.category"
+                          :key="category.id"
+                          :items="categories"
+                          v-model="form.category = category.id"
+                          name="category"
+                          :rules="categoryRules"
+                          item-value="id"
+                          class="mb-5"
+                          item-text="name"
+                          label="Select album category"
+                        />
+
+                        <v-file-input
+                          v-model="files"
+                          color="deep-purple accent-4"
+                          accept="image/*"
+                          counter
+                          filled
+                          @change="onUpload"
+                          placeholder="Select your files"
+                          :show-size="1000"
+                        >
+                          <template v-slot:selection="{ index, text }">
+                            <v-chip
+                              v-if="index < 2"
+                              color="deep-purple accent-4"
+                              dark
+                              label
+                              small
+                            >
+                              {{ text }}
+                            </v-chip>
+
+                            <span
+                              v-else-if="index === 2"
+                              class="
+                                text-overline
+                                grey--text
+                                text--darken-3
+                                mx-2
+                              "
+                            >
+                              +{{ files.length - 2 }} File(s)
+                            </span>
+                          </template>
+                        </v-file-input>
                       </v-form>
                     </v-container>
                     <small>*indicates required field</small>
@@ -141,20 +196,25 @@
                 </v-card>
               </v-dialog>
             </v-row>
-            <div class="flex justify-end mr-3">
-              <!-- <inertia-link :href="route('question.create')"> -->
-              <v-btn class="mx-2 mb-5" fab dark color="primary">
-                <v-icon dark> mdi-plus </v-icon>
-              </v-btn>
-              <v-btn
-                @click="confirmationDialog = true"
-                fab
-                color="red white--text"
+            <span v-if="album.currentUser">
+              <div
+                v-if="album.user_id == album.currentUser.id"
+                class="flex justify-end mr-3"
               >
-                <v-icon dark> mdi-delete </v-icon>
-              </v-btn>
-              <!-- </inertia-link> -->
-            </div>
+                <inertia-link :href="route('image.create', album.id)">
+                  <v-btn class="mx-2 mb-5" fab dark color="primary">
+                    <v-icon dark> mdi-plus </v-icon>
+                  </v-btn>
+                </inertia-link>
+                <v-btn
+                  @click="confirmationDialog = true"
+                  fab
+                  color="red white--text"
+                >
+                  <v-icon dark> mdi-delete </v-icon>
+                </v-btn>
+              </div>
+            </span>
             <!-- <v-row no-gutters v-if="album.questions.length != 0">
           <v-col
             v-for="(question, id) in album.questions"
@@ -176,18 +236,84 @@
             </v-card>
           </v-col>
         </v-row> -->
-            <div class="text-center mx-auto">
+            <div class="mt-8 font-semibold mt-4">Galery</div>
+
+            <div
+              class="
+                grid grid-cols-2
+                sm:grid-cols-3
+                gap-4
+                md:gap-6
+                xl:gap-8
+                mt-8
+              "
+              v-if="album.images.length != 0"
+            >
+              <!-- image - start -->
+              <span
+                v-for="(image, id) in album.images"
+                :key="id"
+                class="
+                  group
+                  h-48
+                  md:h-72
+                  lg:h-96
+                  flex
+                  justify-end
+                  items-end
+                  bg-gray-100
+                  overflow-hidden
+                  rounded-lg
+                  shadow-lg
+                  relative
+                "
+              >
+                <inertia-link :href="route('image.edit', image.id)">
+                  <img
+                    :src="image.image"
+                    loading="lazy"
+                    alt="Photo by Minh Pham"
+                    class="
+                      w-full
+                      h-full
+                      object-cover object-center
+                      absolute
+                      inset-0
+                      transform
+                      group-hover:scale-110
+                      transition
+                      duration-200
+                    "
+                  />
+
+                  <div
+                    class="
+                      bg-gradient-to-t
+                      from-gray-800
+                      via-transparent
+                      to-transparent
+                      opacity-50
+                      absolute
+                      inset-0
+                      pointer-events-none
+                    "
+                  ></div>
+                </inertia-link>
+              </span>
+              <!-- image - end -->
+            </div>
+            <div v-else class="text-center pt-8 mx-auto">
               <span>
                 No image availaible in this album.<br />
                 Click add button to add one .
               </span>
               <v-img src="../../../../images/no-data.jpg"></v-img>
             </div>
-          </v-container>
+          </div>
         </v-main>
-      </div>
+      </v-app>
     </AppLayout>
-  </v-app>
+  </div>
 </template>
 <script>
 import AppLayout from "../../Layouts/AppLayout";
@@ -196,23 +322,28 @@ export default {
   components: {
     AppLayout,
   },
-  props: ["album"],
-  remember: "form",
+  props: ["album", "categories"],
   data() {
     return {
       dialog: false,
+      loading: false,
+      zIndex: 0,
       confirmationDialog: false,
       valid: true,
+      files: [],
       sending: false,
       multiLine: true,
       snackbar: true,
-      form: {
+      form: this.$inertia.form({
+        _method: "PUT",
         name: this.album.name,
         description: this.album.description,
-      },
+        category: "",
+        image: null,
+      }),
       nameRules: [(v) => !!v || "Name is required"],
-      minutesRules: [(v) => !!v || "Duration of the album is required"],
       descriptionRules: [(v) => !!v || "Description is required"],
+      categoryRules: [(v) => !!v || "Category is required"],
     };
   },
   methods: {
@@ -222,18 +353,27 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    update: function () {
-      if (this.$refs.form.validate()) {
-        this.$inertia.put(
-          this.route("album.update", this.album.id),
-          this.form,
-          {
-            onStart: () => (this.sending = true),
-            onFinish: () => (this.sending = false),
-          }
-        );
-      }
+    onUpload() {
+      this.form.image = this.files;
+    },
+    async update() {
       this.dialog = false;
+      this.loading = true;
+      try {
+        if (this.$refs.form.validate()) {
+          await this.form.post(
+            this.route("album.update", this.album.id),
+            this.form,
+            {
+              onStart: () => (this.sending = true),
+              onFinish: () => (this.sending = false),
+            }
+          );
+          this.loading = false;
+        }
+      } catch (e) {
+        return e;
+      }
     },
     destroy(album) {
       album._method = "DELETE";

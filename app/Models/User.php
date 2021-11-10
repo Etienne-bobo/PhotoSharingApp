@@ -9,13 +9,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Laravelista\Comments\Commenter;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use Notifiable;
+    use Notifiable, Commenter;
     use TwoFactorAuthenticatable;
 
     /**
@@ -40,6 +41,7 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
+    
 
     /**
      * The attributes that should be cast to native types.
@@ -58,4 +60,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function following(){
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
+    }
+
+    public function amIfollowing($userId){
+        return \DB::table('followers')->where('follower_id', auth()->user()->id)
+        ->where('following_id', $userId)->exists();
+    }
 }
