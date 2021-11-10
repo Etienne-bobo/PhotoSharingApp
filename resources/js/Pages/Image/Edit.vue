@@ -89,17 +89,26 @@
             :key="index"
             class="flex justify-end mr-3"
           >
-          <span v-if="user">
-             <v-btn
-              v-if="imageOwner.user_id == user.id"
-              @click="confirmationDialog = true"
-              fab
-              color="red white--text"
-            >
-              <v-icon dark> mdi-delete </v-icon>
-            </v-btn>
-          </span>
-           
+            <span v-if="user">
+              <v-btn
+                v-if="imageOwner.user_id == user.id"
+                @click="confirmationDialog = true"
+                fab
+                color="red white--text"
+              >
+                <v-icon dark> mdi-delete </v-icon>
+              </v-btn>
+            </span>
+          </div>
+          <div v-for="(imageOwnerProfileInfo, ind) in imageOwnerProfile" :key="ind" class="mt-16 px-4 flex items-center text-indigo-500 font-semibold">
+            <v-avatar class="mr-3" color="indigo">
+              <v-img
+                :src="
+                  imageOwnerProfileInfo.profile_photo_url
+                "
+              ></v-img>
+            </v-avatar>
+            <span>{{imageOwnerProfileInfo.name}}</span>
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
@@ -287,6 +296,7 @@ export default {
       loading: false,
       zIndex: 0,
       confirmationDialog: false,
+      imageOwnerProfile: [],
     };
   },
   components: {
@@ -364,6 +374,11 @@ export default {
     axios
       .get(`http://localhost:8000/image/${this.image.id}/edit/comments`)
       .then((response) => (this.comments = response.data.reverse()));
+
+    let imageOwnerId = Object.assign({}, this.imageAlbum);
+    axios
+      .get(`http://localhost:8000/imageOwnerProfile/${imageOwnerId['0'].user_id}`)
+      .then((response) => (this.imageOwnerProfile = response.data));
   },
 };
 </script>

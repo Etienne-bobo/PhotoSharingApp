@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use App\Models\Album;
 use App\Models\Image;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -32,5 +33,10 @@ class HomeController extends Controller
         return Inertia::render('Home/AllAlbum', [
             'allAlbum' => $allAlbum,
         ]);
+    }
+
+    public function imageOwnerProfile($id){
+        $imageOwnerProfile = User::where('id', $id)->get();
+        return $imageOwnerProfile;
     }
 }

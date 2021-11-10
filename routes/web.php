@@ -83,3 +83,5 @@ Route::get('image/{id}/edit/comments', function($id){
         $comments = $image->comments()->get();
         return $comments;
 });
+
+Route::get('/imageOwnerProfile/{id}', [HomeController::class, 'imageOwnerProfile']);
