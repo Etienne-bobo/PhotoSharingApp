@@ -19,10 +19,15 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
-        return Inertia::render('Album/Index', [
-            'albums' => $albums              
-        ]);
+        if(auth()->user()){
+            $albums  = Album::where('user_id', auth()->user()->id)->latest()->get();
+            return Inertia::render('Album/Index', [
+                'albums' => $albums              
+            ]);
+        }else{
+            return Redirect::route('login');
+        }
+       
     }
 
     /**
@@ -32,10 +37,14 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        $categories  = Category::get();
-        return Inertia::render('Album/Create', [
-            'categories' => $categories              
-        ]);
+        if(auth()->user()){
+            $categories  = Category::get();
+            return Inertia::render('Album/Create', [
+                'categories' => $categories              
+            ]);
+         }else{
+            return Redirect::route('login');
+        }
     }
 
     /**
@@ -89,7 +98,7 @@ class AlbumController extends Controller
                 'image' => $album->image,
                 'category' => $album->category()->get(),
                 'user_id' => $album->user_id,
-                'currentUser' => auth()->user()->id,
+                'currentUser' => auth()->user(),
                 'images' => $album->images()->get()->map->only('id', 'image'),
             ],
             'categories' => $categories

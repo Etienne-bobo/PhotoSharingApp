@@ -6,8 +6,7 @@
           <div class="max-w-7xl px-4 mx-auto">
             <!-- product - start -->
             <div>
-              <a
-                href="#"
+              <div
                 class="
                   group
                   Height
@@ -37,7 +36,7 @@
 
                 <div
                   @click="downloadPhoto"
-                  class="flex gap-2 absolute left-0 bottom-2"
+                  class="flex gap-2 absolute left-0 bottom-2 cursor-pointer"
                 >
                   <span
                     class="
@@ -55,7 +54,7 @@
                     <v-icon class="text-white">mdi-download</v-icon></span
                   >
                 </div>
-              </a>
+              </div>
             </div>
           </div>
           <v-row justify="center">
@@ -63,10 +62,7 @@
               <v-card>
                 <v-card-title> Delete this album </v-card-title>
                 <v-card-text>
-                  <p>
-                    This action will remove definitively
-                    this image
-                  </p>
+                  <p>This action will remove definitively this image</p>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -93,7 +89,8 @@
             :key="index"
             class="flex justify-end mr-3"
           >
-            <v-btn
+          <span v-if="user">
+             <v-btn
               v-if="imageOwner.user_id == user.id"
               @click="confirmationDialog = true"
               fab
@@ -101,13 +98,15 @@
             >
               <v-icon dark> mdi-delete </v-icon>
             </v-btn>
+          </span>
+           
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
               <v-form v-if="user" class="flex">
-                <v-avatar class="mr-3" color="indigo">
+                <!-- <v-avatar class="mr-3" color="indigo">
                   <v-icon dark>mdi-account-circle </v-icon>
-                </v-avatar>
+                </v-avatar> -->
 
                 <v-textarea
                   v-model="comment"
@@ -118,22 +117,12 @@
                   label="start a discussion"
                   rows="1"
                 ></v-textarea>
-
-                <span
-                  class="
-                    ml-4
-                    text-white
-                    cursor-pointer
-                    mb-7
-                    pt-4
-                    bg-indigo-500
-                    rounded-md
-                    px-4
-                  "
-                  @click.prevent="store"
-                >
-                  Post as {{ user.name }}
-                </span>
+                <v-btn fab class="ml-4">
+                  <v-icon @click.prevent="store">
+                    <!-- Post as {{ user.name }} -->
+                    mdi-send
+                  </v-icon>
+                </v-btn>
               </v-form>
               <div class="text-green-500 mb-8" v-else>
                 Please login to comment or to reply to a comment
@@ -341,7 +330,7 @@ export default {
             }
           )
           .then((response) => (this.tempReply = response.data));
-        this.comment = "";
+        this.reply = [];
       } catch (e) {
         return e;
       }
@@ -382,7 +371,10 @@ export default {
 .btn {
   text-transform: unset !important;
 }
-.Height {
-  height: 600px;
+
+@media (min-width: 768px) {
+  .Height {
+    height: 600px /* 384px */;
+  }
 }
 </style>

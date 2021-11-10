@@ -27,8 +27,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])
-    ->resource('album', AlbumController::class);
+Route::resource('album', AlbumController::class);
 
 
 Route::middleware(['auth:sanctum', 'verified'])
