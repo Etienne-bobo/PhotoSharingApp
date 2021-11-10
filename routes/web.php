@@ -24,9 +24,7 @@ Route::get('/', [HomeController::class, 'getAlbumsList'])->name('zon');
 // Route::get('/onealbum/{id}', [HomeController::class, 'getOneAlbum'])->name('one.album');
 Route::get('/allalbum', [HomeController::class, 'getAllAlbumlist'])->name('all.album');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'statistics'])->name('dashboard');
 
 Route::resource('album', AlbumController::class);
 

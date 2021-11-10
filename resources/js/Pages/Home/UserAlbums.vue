@@ -19,7 +19,7 @@
               >
                 All Albums created by
               </h2>
-              <v-flex class="mt-6">
+              <v-flex v-if="OneUser" class="mt-6">
                 <div class="mt-6 py-8 rounded-md px-4 w-full bg-gray-200">
                   <p
                     class="

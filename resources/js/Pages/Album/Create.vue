@@ -13,7 +13,7 @@
         <div class="max-w-2xl mx-auto">
           <v-container>
             <v-card flat class="mt-8">
-              <v-alert border="top" colored-border type="info" elevation="2">
+              <v-alert border="top" class="py-6" colored-border type="info" elevation="2">
                 Create Albun
               </v-alert>
 

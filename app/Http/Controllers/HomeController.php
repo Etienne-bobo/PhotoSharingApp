@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Follower;
 
 use Illuminate\Http\Request;
 
@@ -61,5 +62,20 @@ class HomeController extends Controller
              return Redirect::route('zon');
          }
        
+    }
+
+    public function statistics(){
+        $albums = Album::where('user_id', auth()->user()->id)->with('images')->get();
+        $followings = Follower::where('follower_id', auth()->user()->id)->with('userfollow')->get();
+        $followers = Follower::where('following_id', auth()->user()->id)->with('whofollowUser')->get();
+        // foreach($followings as $following){
+        //     $userId = $following->userfollow();
+        // }
+        // $follows = (new User)->amIfollowing($userId);
+        return Inertia::render('Dashboard', [
+            'userAlbums' => $albums,
+            'followings' => $followings,
+            'followers' => $followers,
+        ]);
     }
 }
