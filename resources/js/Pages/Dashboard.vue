@@ -2,7 +2,7 @@
   <app-layout>
     <v-app>
       <v-main>
-        <div class="mt-6 px-4">
+        <div class="mt-6 max-w-7xl mx-auto px-4">
           <div>
             <v-row no-gutters>
               <v-col cols="12" sm="4">
@@ -77,7 +77,7 @@
             <v-tab-item :value="'mobile-tabs-5-' + 1">
               <v-card flat>
                 <v-card-text>
-                  <v-list-item-group color="primary">
+                  <v-list-item-group v-if="follower.length != 0" color="primary">
                     <v-list-item v-for="(follow, i) in follower" :key="i">
                       <v-list-item-icon>
                         <v-avatar><v-img :src="follow.profile_photo_url"></v-img></v-avatar>
@@ -88,13 +88,22 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
+                  <v-list-item-group v-else color="primary">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                        > No followers</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                  
                 </v-card-text>
               </v-card>
             </v-tab-item>
             <v-tab-item :value="'mobile-tabs-5-' + 2">
               <v-card flat>
                 <v-card-text>
-                  <v-list-item-group color="primary">
+                  <v-list-item-group v-if="following.length != 0" color="primary">
                     <v-list-item v-for="(follow, i) in following" :key="i">
                       <v-list-item-icon>
                         <v-avatar><v-img :src="follow.profile_photo_url"></v-img></v-avatar>
@@ -102,6 +111,14 @@
                       <v-list-item-content>
                         <v-list-item-title
                         > {{follow.name}}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                  <v-list-item-group v-else color="primary">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                        > No followings</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
