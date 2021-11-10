@@ -44,9 +44,18 @@ class HomeController extends Controller
         if (User::where('id', '=', $id)->exists()) {
             $userAlbums = Album::where('user_id', $id)->with('user')->get();
             $user = User::find($id);
+            if(\Auth::check()){
+                $userId = $id;
+                $follows = (new User)->amIfollowing($userId);
+               }else{
+                   $userId = null;
+                   $follows = null;
+               }
             return Inertia::render('Home/UserAlbums', [
                 'userAlbums' => $userAlbums,
                 'OneUser' => $user,
+                'follows' => $follows,
+                'user' => auth()->user(),
             ]);
          }else{
              return Redirect::route('zon');

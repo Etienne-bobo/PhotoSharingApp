@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use Illuminate\Support\Facades\Config;
@@ -87,3 +88,8 @@ Route::get('image/{id}/edit/comments', function($id){
 Route::get('/imageOwnerProfile/{id}', [HomeController::class, 'imageOwnerProfile']);
 
 Route::get('/userAlbums/{id}', [HomeController::class, 'userAlbums'])->name('user.albums');
+
+// following
+
+Route::post('/follow', [FollowController::class, 'followUnfollow']);
+

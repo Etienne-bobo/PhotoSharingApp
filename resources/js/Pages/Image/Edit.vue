@@ -111,6 +111,10 @@
             </v-avatar>
             <span>{{imageOwnerProfileInfo.name}}</span>
             </inertia-link>
+            <span v-if="user && user.id != userId">
+              <v-btn @click="followUser" color="success" v-if="!status" class="ml-8">Follow</v-btn>
+              <v-btn @click="followUser" color="orange" class="ml-8" v-else> Unfollow</v-btn>
+            </span>
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
@@ -136,7 +140,7 @@
                 </v-btn>
               </v-form>
               <div class="text-green-500 mb-8" v-else>
-                Please login to comment or to reply to a comment
+                Please login to follow, comment or to reply to a comment
               </div>
               <div class="text-green-800 font-semibold mb-8">Comments</div>
 
@@ -288,6 +292,8 @@
 import { TimeAgo } from "vue2-timeago";
 import AppLayout from "../../Layouts/AppLayout.vue";
 export default {
+  props: ["image", "user", "commentsReply", "imageAlbum", 'follows', 'userId'],
+
   data() {
     return {
       comment: "",
@@ -299,6 +305,7 @@ export default {
       zIndex: 0,
       confirmationDialog: false,
       imageOwnerProfile: [],
+      status: this.follows,
     };
   },
   components: {
@@ -306,7 +313,6 @@ export default {
     AppLayout,
   },
 
-  props: ["image", "user", "commentsReply", "imageAlbum"],
   computed: {
     CommentsReplys() {
       if (this.comments.length != 0) {
@@ -371,6 +377,14 @@ export default {
       this.$inertia.post("/image/delete/" + image.id, image);
       this.confirmationDialog = false;
     },
+    async followUser(){
+      try{
+          await axios.post('/follow', {userId : this.userId})
+          this.status = ! this.status
+      }catch(e){
+        return e
+      }
+    }
   },
   mounted() {
     axios
