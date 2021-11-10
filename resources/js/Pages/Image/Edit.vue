@@ -84,10 +84,11 @@
               </v-card>
             </v-dialog>
           </v-row>
+          <div class="max-w-7xl mx-auto">
           <div
             v-for="(imageOwner, index) in imageAlbum"
             :key="index"
-            class="flex justify-end mr-3"
+            class="flex justify-end max-w-7xl mr-3"
           >
             <span v-if="user">
               <v-btn
@@ -115,6 +116,7 @@
               <v-btn @click="followUser" color="success" v-if="!status" class="ml-8">Follow</v-btn>
               <v-btn @click="followUser" color="orange" class="ml-8" v-else> Unfollow</v-btn>
             </span>
+          </div>
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
