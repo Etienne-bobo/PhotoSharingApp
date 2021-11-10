@@ -143,11 +143,11 @@ export default {
       return follows;
     },
     follower() {
-      let follows = [];
+      let followerList = [];
       for (var f = 0; f < this.followers.length; f++) {
-        follows.push(this.followers[f].whofollowUser);
+        followerList.push(this.followers[f].whofollow_user);
       }
-      return follows;
+      return followerList;
     },
   },
 };
