@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikerController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Http\Request;
 use App\Models\Image;
@@ -90,4 +91,9 @@ Route::get('/userAlbums/{id}', [HomeController::class, 'userAlbums'])->name('use
 // following
 
 Route::post('/follow', [FollowController::class, 'followUnfollow']);
+
+Route::post('/like', [LikerController::class, 'likeUnlike']);
+
+Route::get('/likeCount/{id}', [LikerController::class, 'likeCount']);
+
 

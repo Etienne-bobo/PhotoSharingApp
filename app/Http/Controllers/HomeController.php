@@ -7,7 +7,7 @@ use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Follower;
-
+use App\Models\Liker;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -68,6 +68,7 @@ class HomeController extends Controller
         $albums = Album::where('user_id', auth()->user()->id)->with('images')->get();
         $followings = Follower::where('follower_id', auth()->user()->id)->with('userfollow')->get();
         $followers = Follower::where('following_id', auth()->user()->id)->with('whofollowUser')->get();
+        $liker = Liker::where('liker_id', auth()->user()->id)->with('userlike')->get();
         // foreach($followings as $following){
         //     $userId = $following->userfollow();
         // }
@@ -76,6 +77,7 @@ class HomeController extends Controller
             'userAlbums' => $albums,
             'followings' => $followings,
             'followers' => $followers,
+            'liker' => $liker,
         ]);
     }
 }

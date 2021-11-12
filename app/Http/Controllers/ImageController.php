@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Liker;
 
 use Laravelista\Comments\Comment;
 
@@ -83,9 +84,10 @@ class ImageController extends Controller
        if(\Auth::check()){
         $userId = $image->album()->first()->user_id;
         $follows = (new User)->amIfollowing($userId);
+
+        $likes = (new Image)->amIliking($id);
        }else{
-           $userId = null;
-           $follows = null;
+           $likes = null;
        }
         
         return Inertia::render('Image/Edit', [
@@ -95,7 +97,8 @@ class ImageController extends Controller
             'commentsReply' => $comment->where('child_id', '!=', '')->get(),
             'imageAlbum' => $image->album()->get(),
             'follows' => $follows,
-            "userId" => $userId,
+            'userId' => $userId,
+            'likes' => $likes,
         ]);
         // dd($comment->find($id)->get());
        // dd($image->album()->get());

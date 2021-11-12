@@ -22,4 +22,9 @@ class Image extends Model
     public function album(){
         return $this->belongsTo(Album::class);
     }
+
+    public function amIliking($imageId){
+        return \DB::table('likers')->where('liker_id', auth()->user()->id)
+        ->where('image_id', $imageId)->exists();
+    }
 }

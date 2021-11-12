@@ -138,7 +138,7 @@ export default {
   components: {
     AppLayout,
   },
-  props: ["userAlbums", "followings", "followers"],
+  props: ["userAlbums", "followings", "followers", "liker"],
   data() {
     return {
       tabs: null,

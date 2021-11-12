@@ -60,7 +60,7 @@
           <v-row justify="center">
             <v-dialog v-model="confirmationDialog" persistent max-width="600px">
               <v-card>
-                <v-card-title> Delete this album </v-card-title>
+                <v-card-title> Delete this image </v-card-title>
                 <v-card-text>
                   <p>This action will remove definitively this image</p>
                 </v-card-text>
@@ -85,38 +85,66 @@
             </v-dialog>
           </v-row>
           <div class="max-w-7xl mx-auto">
-          <div
-            v-for="(imageOwner, index) in imageAlbum"
-            :key="index"
-            class="flex justify-end max-w-7xl mr-3"
-          >
-            <span v-if="user">
-              <v-btn
-                v-if="imageOwner.user_id == user.id"
-                @click="confirmationDialog = true"
-                fab
-                color="red white--text"
+            <div class="flex justify-end mr-4">
+              <span v-if="user" class="mr-3">
+                <v-btn fab @click="likeImage" v-if="!isLiked" class="ml-8 focus:outline-none focus:bg-white"
+                  ><v-icon>mdi-thumb-up-outline</v-icon
+                  ><span>{{ likeCount }}</span></v-btn
+                >
+                <v-btn
+                  fab
+                  @click="likeImage"
+                  color="primary"
+                  v-else
+                  class="ml-8 focus:outline-none focus:bg-white"
+                  ><v-icon>mdi-thumb-up</v-icon
+                  ><span>{{ likeCount }}</span></v-btn
+                >
+              </span>
+              <div
+                v-for="(imageOwner, index) in imageAlbum"
+                :key="index"
+                class="max-w-7xl mr-3"
               >
-                <v-icon dark> mdi-delete </v-icon>
-              </v-btn>
-            </span>
-          </div>
-          <div v-for="(imageOwnerProfileInfo, ind) in imageOwnerProfile" :key="ind" class="mt-16 px-4 flex items-center text-indigo-500 font-semibold">
-            <inertia-link :href="route('user.albums', imageOwnerProfileInfo.id)">
-            <v-avatar class="mr-3" color="indigo">
-              <v-img
-                :src="
-                  imageOwnerProfileInfo.profile_photo_url
-                "
-              ></v-img>
-            </v-avatar>
-            <span>{{imageOwnerProfileInfo.name}}</span>
-            </inertia-link>
-            <span v-if="user && user.id != userId">
-              <v-btn @click="followUser" color="success" v-if="!status" class="ml-8">Follow</v-btn>
-              <v-btn @click="followUser" color="orange" class="ml-8" v-else> Unfollow</v-btn>
-            </span>
-          </div>
+                <span v-if="user">
+                  <v-btn
+                    v-if="imageOwner.user_id == user.id"
+                    @click="confirmationDialog = true"
+                    fab
+                    color="red white--text"
+                  >
+                    <v-icon dark> mdi-delete </v-icon>
+                  </v-btn>
+                </span>
+              </div>
+            </div>
+
+            <div
+              v-for="(imageOwnerProfileInfo, ind) in imageOwnerProfile"
+              :key="ind"
+              class="mt-8 px-4 flex items-center text-indigo-500 font-semibold"
+            >
+              <inertia-link
+                :href="route('user.albums', imageOwnerProfileInfo.id)"
+              >
+                <v-avatar class="mr-3" color="indigo">
+                  <v-img :src="imageOwnerProfileInfo.profile_photo_url"></v-img>
+                </v-avatar>
+                <span>{{ imageOwnerProfileInfo.name }}</span>
+              </inertia-link>
+              <span v-if="user && user.id != userId">
+                <v-btn
+                  @click="followUser"
+                  color="success"
+                  v-if="!status"
+                  class="ml-8"
+                  >Follow</v-btn
+                >
+                <v-btn @click="followUser" color="orange" class="ml-8" v-else>
+                  Unfollow</v-btn
+                >
+              </span>
+            </div>
           </div>
           <div class="mx-auto max-w-7xl">
             <div class="max-w-2xl px-4 mt-12">
@@ -294,7 +322,15 @@
 import { TimeAgo } from "vue2-timeago";
 import AppLayout from "../../Layouts/AppLayout.vue";
 export default {
-  props: ["image", "user", "commentsReply", "imageAlbum", 'follows', 'userId'],
+  props: [
+    "image",
+    "user",
+    "commentsReply",
+    "imageAlbum",
+    "follows",
+    "userId",
+    "likes",
+  ],
 
   data() {
     return {
@@ -308,6 +344,8 @@ export default {
       confirmationDialog: false,
       imageOwnerProfile: [],
       status: this.follows,
+      isLiked: this.likes,
+      likeCount: "",
     };
   },
   components: {
@@ -379,14 +417,25 @@ export default {
       this.$inertia.post("/image/delete/" + image.id, image);
       this.confirmationDialog = false;
     },
-    async followUser(){
-      try{
-          await axios.post('/follow', {userId : this.userId})
-          this.status = ! this.status
-      }catch(e){
-        return e
+    async followUser() {
+      try {
+        await axios.post("/follow", { userId: this.userId });
+        this.status = !this.status;
+      } catch (e) {
+        return e;
       }
-    }
+    },
+    async likeImage() {
+      try {
+        await axios.post("/like", { imageId: this.image.id });
+        axios
+          .get(`http://localhost:8000/likeCount/${this.image.id}`)
+          .then((response) => (this.likeCount = response.data));
+        this.isLiked = !this.isLiked;
+      } catch (e) {
+        return e;
+      }
+    },
   },
   mounted() {
     axios
@@ -395,8 +444,13 @@ export default {
 
     let imageOwnerId = Object.assign({}, this.imageAlbum);
     axios
-      .get(`http://localhost:8000/imageOwnerProfile/${imageOwnerId['0'].user_id}`)
+      .get(
+        `http://localhost:8000/imageOwnerProfile/${imageOwnerId["0"].user_id}`
+      )
       .then((response) => (this.imageOwnerProfile = response.data));
+    axios
+      .get(`http://localhost:8000/likeCount/${this.image.id}`)
+      .then((response) => (this.likeCount = response.data));
   },
 };
 </script>
