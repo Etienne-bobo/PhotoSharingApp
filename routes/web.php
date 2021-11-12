@@ -98,5 +98,8 @@ Route::get('/likeCount/{id}', [LikerController::class, 'likeCount']);
 
 Route::get('/userWhoLike/{id}', [LikerController::class, 'userWhoLike']);
 
+Route::get('/followStatus/{id}', [FollowController::class, 'followStatus']);
+
+Route::get('/likeStatus/{id}', [LikerController::class, 'likeStatus']);
 
 

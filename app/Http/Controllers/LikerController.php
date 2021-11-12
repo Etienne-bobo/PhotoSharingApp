@@ -27,4 +27,13 @@ class LikerController extends Controller
         return $liker;
     }
 
+    public function likeStatus($id){
+        if(\Auth::check()){    
+            $likes = (new Image)->amIliking($id);
+        }else{
+            $likes = null;
+        }
+        return $likes;
+    }
+
 }

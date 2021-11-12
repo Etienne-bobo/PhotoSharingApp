@@ -191,7 +191,8 @@
                 </v-btn>
               </v-form>
               <div class="text-green-500 mb-8" v-else>
-                Please login to like the picture, follow, comment or to reply to a comment
+                Please login to like the picture, follow, comment or to reply to
+                a comment
               </div>
               <div class="text-green-800 font-semibold mb-8">Comments</div>
 
@@ -343,15 +344,7 @@
 import { TimeAgo } from "vue2-timeago";
 import AppLayout from "../../Layouts/AppLayout.vue";
 export default {
-  props: [
-    "image",
-    "user",
-    "commentsReply",
-    "imageAlbum",
-    "follows",
-    "userId",
-    "likes",
-  ],
+  props: ["image", "user", "commentsReply", "imageAlbum", "userId"],
 
   data() {
     return {
@@ -364,10 +357,10 @@ export default {
       zIndex: 0,
       confirmationDialog: false,
       imageOwnerProfile: [],
-      status: this.follows,
-      isLiked: this.likes,
+      isLiked: '',
       likeCount: "",
       userWhoLike: [],
+      status: "",
     };
   },
   components: {
@@ -487,6 +480,14 @@ export default {
     axios
       .get(`http://localhost:8000/userWhoLike/${this.image.id}`)
       .then((response) => (this.userWhoLike = response.data));
+
+    axios
+      .get(`http://localhost:8000/followStatus/${this.image.id}`)
+      .then((response) => (this.status = response.data));
+
+    axios
+      .get(`http://localhost:8000/likeStatus/${this.image.id}`)
+      .then((response) => (this.isLiked = response.data));
   },
 };
 </script>
