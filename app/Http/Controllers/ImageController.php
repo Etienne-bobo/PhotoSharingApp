@@ -88,8 +88,11 @@ class ImageController extends Controller
         $likes = (new Image)->amIliking($id);
        }else{
            $likes = null;
+           $follows = null;
+           $userId = null;
        }
-        
+
+
         return Inertia::render('Image/Edit', [
             'image' => $image,
             'comments' => $image->comments()->get(),

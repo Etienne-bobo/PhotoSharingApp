@@ -96,4 +96,7 @@ Route::post('/like', [LikerController::class, 'likeUnlike']);
 
 Route::get('/likeCount/{id}', [LikerController::class, 'likeCount']);
 
+Route::get('/userWhoLike/{id}', [LikerController::class, 'userWhoLike']);
+
+
 

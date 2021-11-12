@@ -11,6 +11,6 @@ class Liker extends Model
     protected $guarded = [];
 
     public function userlike(){
-        return $this->belongsTo(Image::class, 'image_id' , 'id');
+        return $this->belongsTo(User::class, 'liker_id' , 'id');
     }
 }

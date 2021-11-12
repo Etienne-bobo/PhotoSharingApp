@@ -86,21 +86,42 @@
           </v-row>
           <div class="max-w-7xl mx-auto">
             <div class="flex justify-end mr-4">
-              <span v-if="user" class="mr-3">
-                <v-btn fab @click="likeImage" v-if="!isLiked" class="ml-8 focus:outline-none focus:bg-white"
-                  ><v-icon>mdi-thumb-up-outline</v-icon
-                  ><span>{{ likeCount }}</span></v-btn
-                >
-                <v-btn
-                  fab
-                  @click="likeImage"
-                  color="primary"
-                  v-else
-                  class="ml-8 focus:outline-none focus:bg-white"
-                  ><v-icon>mdi-thumb-up</v-icon
-                  ><span>{{ likeCount }}</span></v-btn
-                >
-              </span>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <span v-if="user" class="mr-3">
+                    <v-btn
+                      fab
+                      @click="likeImage"
+                      v-bind="attrs"
+                      v-on="on"
+                      v-if="!isLiked"
+                      class="ml-8 focus:outline-none focus:bg-white"
+                      ><v-icon>mdi-thumb-up-outline</v-icon
+                      ><span>{{ likeCount }}</span></v-btn
+                    >
+                    <v-btn
+                      fab
+                      @click="likeImage"
+                      v-bind="attrs"
+                      v-on="on"
+                      color="primary"
+                      v-else
+                      class="ml-8 focus:outline-none focus:bg-white"
+                      ><v-icon>mdi-thumb-up</v-icon
+                      ><span>{{ likeCount }}</span></v-btn
+                    >
+                  </span>
+                </template>
+                <div class="flex flex-col">
+                  <span v-for="(lik, index) in liker" :key="index" class="my-2">
+                    <v-avatar class="mr-3" color="indigo">
+                      <v-img :src="lik.profile_photo_url"></v-img>
+                    </v-avatar>
+                    <span>{{ lik.name }}</span>
+                  </span>
+                </div>
+              </v-tooltip>
+
               <div
                 v-for="(imageOwner, index) in imageAlbum"
                 :key="index"
@@ -346,6 +367,7 @@ export default {
       status: this.follows,
       isLiked: this.likes,
       likeCount: "",
+      userWhoLike: [],
     };
   },
   components: {
@@ -358,6 +380,13 @@ export default {
       if (this.comments.length != 0) {
         return this.commentsReply.reverse();
       }
+    },
+    liker() {
+      let whoLike = [];
+      for (var f = 0; f < this.userWhoLike.length; f++) {
+        whoLike.push(this.userWhoLike[f].userlike);
+      }
+      return whoLike;
     },
   },
   methods: {
@@ -431,6 +460,9 @@ export default {
         axios
           .get(`http://localhost:8000/likeCount/${this.image.id}`)
           .then((response) => (this.likeCount = response.data));
+        axios
+          .get(`http://localhost:8000/userWhoLike/${this.image.id}`)
+          .then((response) => (this.userWhoLike = response.data));
         this.isLiked = !this.isLiked;
       } catch (e) {
         return e;
@@ -451,6 +483,10 @@ export default {
     axios
       .get(`http://localhost:8000/likeCount/${this.image.id}`)
       .then((response) => (this.likeCount = response.data));
+
+    axios
+      .get(`http://localhost:8000/userWhoLike/${this.image.id}`)
+      .then((response) => (this.userWhoLike = response.data));
   },
 };
 </script>

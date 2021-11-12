@@ -21,4 +21,10 @@ class LikerController extends Controller
         $likeCount = Liker::where('image_id', $id)->count();
         return $likeCount;
     }
+
+    public function userWhoLike($id){
+        $liker = Liker::where('image_id', $id)->with('userlike')->get();
+        return $liker;
+    }
+
 }
