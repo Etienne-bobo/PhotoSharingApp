@@ -191,7 +191,7 @@
                 </v-btn>
               </v-form>
               <div class="text-green-500 mb-8" v-else>
-                Please login to follow, comment or to reply to a comment
+                Please login to like the picture, follow, comment or to reply to a comment
               </div>
               <div class="text-green-800 font-semibold mb-8">Comments</div>
 
