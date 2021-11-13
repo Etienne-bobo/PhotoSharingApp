@@ -69,4 +69,8 @@ class User extends Authenticatable
         return \DB::table('followers')->where('follower_id', auth()->user()->id)
         ->where('following_id', $userId)->exists();
     }
+
+    public function liking(){
+        return $this->belongsToMany(Image::class, 'likers', 'liker_id', 'image_id');
+    }
 }

@@ -7,7 +7,7 @@ use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Follower;
-
+use App\Models\Liker;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
