@@ -231,8 +231,17 @@
 
                     <div class="flex flex-col mb-4">
                       {{ comment.comment }}
+                      <span
+                        v-if="showReply[0] != comment.id"
+                        @click="showReplyForm(comment.id)"
+                        class="text-green-500 cursor-pointer text-xs flex"
+                        >reply
+                        <v-icon class="text-xs" color="success"
+                          >mdi-subdirectory-arrow-left</v-icon
+                        ></span
+                      >
                     </div>
-                    <div v-if="user" class="mt-4">
+                    <div v-if="user && showReply[0] == comment.id" class="mt-4">
                       <v-textarea
                         v-model="reply[comment.id]"
                         auto-grow
@@ -243,7 +252,6 @@
                         rows="1"
                       ></v-textarea>
                       <span
-                        @click="replys(comment.id)"
                         class="
                           text-green-500
                           cursor-pointer
@@ -251,11 +259,19 @@
                           flex
                           justify-end
                         "
-                        >reply
-                        <v-icon class="text-xs" color="success"
-                          >mdi-subdirectory-arrow-left</v-icon
-                        ></span
                       >
+                        <span
+                          class="mr-4 text-indigo-500"
+                          @click="showReply = []"
+                          >close</span
+                        >
+                        <span @click="replys(comment.id)"
+                          >reply
+                          <v-icon class="text-xs" color="success"
+                            >mdi-subdirectory-arrow-left</v-icon
+                          ></span
+                        >
+                      </span>
                     </div>
                     <div class="" v-if="Object.keys(tempReply).length != 0">
                       <span v-if="tempReply.child_id == comment.id">
@@ -357,10 +373,11 @@ export default {
       zIndex: 0,
       confirmationDialog: false,
       imageOwnerProfile: [],
-      isLiked: '',
+      isLiked: "",
       likeCount: "",
       userWhoLike: [],
       status: "",
+      showReply: [],
     };
   },
   components: {
@@ -383,6 +400,9 @@ export default {
     },
   },
   methods: {
+    showReplyForm(id) {
+      this.showReply.push(id);
+    },
     async store() {
       try {
         await axios.post(
@@ -411,6 +431,7 @@ export default {
           )
           .then((response) => (this.tempReply = response.data));
         this.reply = [];
+        this.showReply = []
       } catch (e) {
         return e;
       }
