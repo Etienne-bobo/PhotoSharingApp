@@ -232,7 +232,7 @@
                     <div class="flex flex-col mb-4">
                       {{ comment.comment }}
                       <span
-                        v-if="showReply[0] != comment.id"
+                        v-if="showReply[0] != comment.id && user"
                         @click="showReplyForm(comment.id)"
                         class="text-green-500 cursor-pointer text-xs flex"
                         >reply
