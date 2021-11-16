@@ -81,7 +81,6 @@
                           text-white text-sm
                           font-semibold
                           tracking-wider
-                          uppercase
                           rounded-r-lg
                           px-3
                           py-1.5
