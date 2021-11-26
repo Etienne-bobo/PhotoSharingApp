@@ -8,10 +8,9 @@
               <div class="mb-10 md:mb-16">
                 <h2
                   class="
-                    text-gray-800 text-2xl
+                    text-gray-600 text-2xl
                     lg:text-3xl
                     font-bold
-                    text-center
                     mb-4
                     md:mb-6
                   "
@@ -81,7 +80,6 @@
                           text-white text-sm
                           font-semibold
                           tracking-wider
-                          uppercase
                           rounded-r-lg
                           px-3
                           py-1.5

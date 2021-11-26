@@ -91,7 +91,7 @@
                   <v-list-item-group v-else color="primary">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title
+                        <v-list-item-title class="text-gray-500"
                         > No followers</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -117,7 +117,7 @@
                   <v-list-item-group v-else color="primary">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title
+                        <v-list-item-title class="text-gray-500"
                         > No followings</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>

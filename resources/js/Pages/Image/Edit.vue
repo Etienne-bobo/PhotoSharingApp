@@ -232,7 +232,7 @@
                     <div class="flex flex-col mb-4">
                       {{ comment.comment }}
                       <span
-                        v-if="showReply[0] != comment.id"
+                        v-if="showReply[0] != comment.id && user"
                         @click="showReplyForm(comment.id)"
                         class="text-green-500 cursor-pointer text-xs flex"
                         >reply
@@ -440,7 +440,7 @@ export default {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "file.png"); //or any other extension
+      link.setAttribute("download", "share_karen_photo.png"); //or any other extension
       document.body.appendChild(link);
       link.click();
     },

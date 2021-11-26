@@ -90,7 +90,6 @@ class ImageController extends Controller
 
         return Inertia::render('Image/Edit', [
             'image' => $image,
-            'comments' => $image->comments()->get(),
             'user' => auth()->user(),
             'commentsReply' => $comment->where('child_id', '!=', '')->get(),
             'imageAlbum' => $image->album()->get(),

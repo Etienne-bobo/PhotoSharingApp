@@ -79,8 +79,9 @@ Route::middleware(['auth:sanctum', 'verified'])
 
 
 Route::get('image/{id}/edit/comments', function($id){
-        $image = Image::find($id);
-        $comments = $image->comments()->get();
+        // $image = Image::find($id);
+        $comment = new \Laravelista\Comments\Comment;
+        $comments =  $comment->where('commentable_id', $id)->where('child_id', null)->get();
         return $comments;
 });
 

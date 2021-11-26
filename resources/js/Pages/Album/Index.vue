@@ -32,7 +32,7 @@
             <div class="bg-white py-6 sm:py-8 lg:py-12">
               <div class="w-full px-4 mx-auto">
                 <!-- text - start -->
-                <div class="mb-10 md:mb-16">
+                <!-- <div class="mb-10 md:mb-16">
                   <h2
                     class="
                       text-gray-800 text-2xl
@@ -57,7 +57,7 @@
                   >
                     Yours albums
                   </p>
-                </div>
+                </div> -->
                 <!-- text - end -->
 
                 <div
