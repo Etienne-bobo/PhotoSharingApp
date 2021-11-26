@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         Category::create(['name' => 'Creative']);
         Category::create(['name' => 'Landscape']);
         Category::create(['name' => 'Architecture']);
+        Category::create(['name' => 'Anime']);
     }
 }

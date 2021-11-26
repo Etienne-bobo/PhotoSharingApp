@@ -68,7 +68,7 @@
                       "
                     >
                       <img
-                        src="https://images.unsplash.com/photo-1542340916-951bb72c8f74?auto=format&q=75&fit=crop&w=550&h=550"
+                        src="https://cdn.pixabay.com/photo/2018/07/21/03/55/woman-3551832_960_720.jpg?auto=format&q=75&fit=crop&w=550&h=550"
                         loading="lazy"
                         alt="Photo by Kaung Htet"
                         class="w-full h-full object-cover object-center"
@@ -79,7 +79,7 @@
                       class="bg-gray-100 rounded-lg shadow-lg overflow-hidden"
                     >
                       <img
-                        src="https://images.unsplash.com/photo-1586295166487-b265f7e83a7f?auto=format&q=75&fit=crop&w=550&h=550"
+                        src="https://cdn.pixabay.com/photo/2015/11/26/00/14/woman-1063100_960_720.jpg?auto=format&q=75&fit=crop&w=550&h=550"
                         loading="lazy"
                         alt="Photo by Manny Moreno"
                         class="w-full h-full object-cover object-center"
@@ -98,10 +98,9 @@
                 <div class="mb-10 md:mb-16">
                   <h2
                     class="
-                      text-gray-800 text-2xl
+                      text-gray-600 text-2xl
                       lg:text-3xl
                       font-bold
-                      text-center
                       mb-4
                       md:mb-6
                     "
@@ -260,7 +259,7 @@
                     "
                   >
                     <img
-                      src="https://images.unsplash.com/photo-1505846951821-e25bacf2eccd?auto=format&q=75&fit=crop&crop=top&w=1000&h=500"
+                      src="https://cdn.pixabay.com/photo/2015/07/09/00/29/woman-837156_960_720.jpg?auto=format&q=75&fit=crop&crop=top&w=1000&h=500"
                       loading="lazy"
                       alt="Photo by Dom Hill"
                       class="w-full h-full object-cover object-center"
@@ -278,10 +277,9 @@
                 <div class="mb-10 md:mb-16">
                   <h2
                     class="
-                      text-gray-800 text-2xl
+                      text-gray-600 text-2xl
                       lg:text-3xl
                       font-bold
-                      text-center
                       mb-4
                       md:mb-6
                     "
