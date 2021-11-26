@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function getAlbumsList(){
-        $albums  = Album::latest()->take(6)->get();
+        $albums  = Album::latest()->take(3)->get();
         $images  = Image::latest()->take(6)->get();
         return Inertia::render('Home/Index', [
             'albums' => $albums ,
