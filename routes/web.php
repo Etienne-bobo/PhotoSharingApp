@@ -69,7 +69,7 @@ Route::middleware(['auth:sanctum', 'verified'])
         $reply->commenter()->associate(auth()->user());
         $reply->commentable()->associate($image);
         $reply->parent()->associate($com);
-        $reply->commentable_id = $commentId;
+        $reply->commentable_id = $id;
         $reply->comment = $request->reply;
         $reply->approved = true;
         $reply->save();
