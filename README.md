@@ -1,3 +1,13 @@
+composer install
+
+npm install
+
+php artisan serve
+
+npm run watch
+
+php artisan db:seed
+
 ![alt text](./resources/views/images/1.png)
 
 ![alt text](./resources/views/images/2.png)
