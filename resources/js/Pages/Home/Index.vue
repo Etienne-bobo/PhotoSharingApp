@@ -58,7 +58,6 @@
                         shadow-lg
                         overflow-hidden
                         relative
-                        z-10
                         top-12
                         md:top-16
                         left-12

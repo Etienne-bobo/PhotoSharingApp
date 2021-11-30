@@ -104,3 +104,4 @@ Route::get('/followStatus/{id}', [FollowController::class, 'followStatus']);
 Route::get('/likeStatus/{id}', [LikerController::class, 'likeStatus']);
 
 
+Route::get('/search/{data}', [HomeController::class, 'search']);

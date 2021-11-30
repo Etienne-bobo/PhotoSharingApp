@@ -78,4 +78,16 @@ class HomeController extends Controller
             'followers' => $followers,
         ]);
     }
+
+    public function search($data){
+        $search = $data;
+
+        // Search in the title and body columns from the posts table
+        $albums = Album::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->get();
+        return $albums;
+    }
+
 }
